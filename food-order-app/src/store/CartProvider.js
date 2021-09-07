@@ -3,6 +3,7 @@ import CartContext from "./cart-context";
 
 const addItem = 'ADD';
 const removeItem = 'REMOVE';
+const clear = 'CLEAR';
 
 const defaultCartState = {
     items: [],
@@ -51,6 +52,9 @@ const cartReducer = (state, action) => {
             totalAmount: newTotalAmount
         }
     }
+    if (action.type === clear) {
+        return defaultCartState;
+    }
     return defaultCartState;
 };
 
@@ -71,11 +75,18 @@ const CartProvider = props => {
         });
     }
 
+    const clearCartHandler = () => {
+        dispatchCartAction({
+            type: clear
+        });
+    }
+
     const cartContext = {
         items: cartState.items,
         totalAmount: cartState.totalAmount,
         addItem: addItemHandler,
         removeItem: removeItemHandler,
+        clearCart: clearCartHandler,
     }
 
     return <CartContext.Provider value={cartContext}>
